@@ -1,36 +1,53 @@
-import React from "react";
-import {
-  StyleSheet,
-  View,
-  Image,
-  ScrollView,
-  Text,
-  TouchableOpacity,
-} from "react-native";
+import React, { useEffect, useState } from "react";
+import { StyleSheet, View, Image, Text, TouchableOpacity } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
+import { logoutDB } from "../utils/auth";
+import { getUserPosts } from "../utils/firestore";
 import Background from "../components/Background";
 import CustomTabBar from "../components/CustomTabBar";
 import PostsList from "../components/PostsList";
 import { colors } from "../styles/global";
 import BgImg from "../assets/images/bg-img.jpg";
-import AddIcon from "../assets/images/add.png";
 import ExitIcon from "../components/icons/ExitIcon";
 
 const ProfileScreen = ({ navigation }) => {
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user.userInfo);
+  const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
+    if (user) {
+      fetchUserPosts();
+    }
+  }, []);
+
+  async function fetchUserPosts() {
+    try {
+      const postsData = await getUserPosts(user.uid);
+      setPosts(postsData);
+    } catch (error) {
+      console.error("Error fetching posts:", error);
+    }
+  }
+
   return (
     <View style={styles.container}>
       <Background source={BgImg}>
         <View style={styles.contentContainer}>
           <View style={styles.avatarWrapper}>
-            <Image source={AddIcon} style={styles.addBtn} />
+            {user?.photoURL && (
+              <Image source={{ uri: user.photoURL }} style={styles.avatarImg} />
+            )}
           </View>
+
           <TouchableOpacity
             style={styles.exitBtn}
-            onPress={() => navigation.navigate("Login")}
+            onPress={() => logoutDB(dispatch)}
           >
             <ExitIcon />
           </TouchableOpacity>
-          <Text style={styles.profileTitle}>Natali Romanova</Text>
-          <PostsList navigation={navigation}/>
+          <Text style={styles.profileTitle}>{user.displayName}</Text>
+          <PostsList posts={posts} navigation={navigation} />
         </View>
         <CustomTabBar navigation={navigation} />
       </Background>
@@ -55,23 +72,31 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
   },
   avatarWrapper: {
-    width: 120,
-    height: 120,
-    backgroundColor: colors.lightGrayBg,
     position: "absolute",
     top: -60,
     left: "50%",
-    transform: [{ translateX: "-50%" }],
+    transform: [{ translateX: -60 }],
+    width: 120,
+    height: 120,
+    backgroundColor: colors.lightGrayBg,
     borderRadius: 16,
+    overflow: "hidden",
     zIndex: 2,
+  },
+  avatarImg: {
+    width: 120,
+    height: 120,
+    objectFit: "cover",
   },
   addBtn: {
     position: "absolute",
-    width: 25,
-    height: 25,
     bottom: 14,
     right: -12,
     zIndex: 3,
+  },
+  btnIcon: {
+    width: 25,
+    height: 25,
   },
   exitBtn: {
     position: "absolute",
@@ -82,6 +107,6 @@ const styles = StyleSheet.create({
     color: colors.black,
     fontSize: 30,
     fontWeight: 500,
-    marginBottom: 32
+    marginBottom: 32,
   },
 });

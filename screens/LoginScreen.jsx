@@ -7,6 +7,8 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
 } from "react-native";
+import { useDispatch } from "react-redux";
+import { loginDB } from "../utils/auth";
 import Background from "../components/Background";
 import AuthInput from "../components/AuthInput";
 import MainButton from "../components/MainButton";
@@ -17,12 +19,11 @@ import { colors } from "../styles/global";
 const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const dispatch = useDispatch();
   console.log(navigation);
 
   function handleSubmit() {
-    navigation.replace("Home");
-
-    Alert.alert(`Вітаємо!`);
+    loginDB({ email, password }, dispatch);
     setEmail("");
     setPassword("");
   }

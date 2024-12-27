@@ -2,10 +2,12 @@ import React from "react";
 import { StyleSheet, ScrollView } from "react-native";
 import Post from "./Post";
 
-const PostsList = ({ navigation, post }) => {
+const PostsList = ({ navigation, posts }) => {
   return (
     <ScrollView style={styles.container}>
-      <Post post={post} navigation={navigation} />
+      {posts?.map((post, index) => (
+        <Post post={post} navigation={navigation} key={index} />
+      ))}
     </ScrollView>
   );
 };

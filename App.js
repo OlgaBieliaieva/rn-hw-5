@@ -1,10 +1,15 @@
 import "react-native-gesture-handler";
-import { NavigationContainer } from "@react-navigation/native";
+
 import { useEffect } from "react";
 import { useFonts } from "expo-font";
-import { ActivityIndicator, StyleSheet, View } from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { ActivityIndicator, StyleSheet, Text } from "react-native";
+import { PersistGate } from "redux-persist/integration/react";
+import { Provider, useDispatch } from "react-redux";
+import store from "./redux/store/store";
 import * as SplashScreen from "expo-splash-screen";
 import StackNavigator from "./navigation/StackNavigator";
+import { authStateChanged } from "./utils/auth";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -25,11 +30,33 @@ export default function App() {
   }
 
   return (
+    <Provider store={store.store}>
+      <PersistGate
+        loading={<Text>Loading...</Text>}
+        persistor={store.persistor}
+      >
+        {/* <NavigationContainer>
+          <StackNavigator />
+        </NavigationContainer> */}
+        <AuthListener />
+      </PersistGate>
+    </Provider>
+  );
+}
+
+const AuthListener = () => {
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    authStateChanged(dispatch);
+  }, [dispatch]);
+
+  return (
     <NavigationContainer>
       <StackNavigator />
     </NavigationContainer>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {

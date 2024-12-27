@@ -1,23 +1,41 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, View, Text, Image } from "react-native";
+import { useSelector } from "react-redux";
+import { getAllPosts } from "../utils/firestore";
 import PostsList from "../components/PostsList";
 import { colors } from "../styles/global";
 
-const PostsScreen = ({ route, navigation }) => {
-  const post = route.params?.post;
+const PostsScreen = ({ navigation }) => {
+  const user = useSelector((state) => state.user.userInfo);
+  const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
+    fetchPosts();
+  }, []);
+
+  async function fetchPosts() {
+    try {
+      const postsData = await getAllPosts();
+      setPosts(postsData);
+    } catch (error) {
+      console.error("Error fetching posts:", error);
+    }
+  }
 
   return (
     <View style={styles.container}>
-      <View style={styles.userContainer}>
-        <View style={styles.avatarWrapper}>
-          <Image />
+      {user && (
+        <View style={styles.userContainer}>
+          <View style={styles.avatarWrapper}>
+            <Image source={{ uri: user.photoURL }} style={styles.avatarImg} />
+          </View>
+          <View>
+            <Text style={styles.userName}>{user.displayName}</Text>
+            <Text style={styles.userEmail}>{user.email}</Text>
+          </View>
         </View>
-        <View>
-          <Text style={styles.userName}>Natali Romanova</Text>
-          <Text style={styles.userEmail}>user1@gmail.com</Text>
-        </View>
-      </View>
-      <PostsList post={post} navigation={navigation} />
+      )}
+      {posts && <PostsList posts={posts} navigation={navigation} />}
     </View>
   );
 };
@@ -41,7 +59,13 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     borderRadius: 16,
+    overflow: "hidden",
     backgroundColor: colors.lightGrayBg,
+  },
+  avatarImg: {
+    width: 60,
+    height: 60,
+    objectFit: "cover",
   },
   userName: {
     color: colors.black,
