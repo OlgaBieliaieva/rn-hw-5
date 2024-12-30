@@ -3,11 +3,13 @@ import { StyleSheet, ScrollView } from "react-native";
 import Comment from "./Comment";
 import Answer from "./Answer";
 
-const CommentsList = ({ comments, user }) => {
+const CommentsList = ({ comments, postAuthor }) => {
+  console.log(comments);
+
   return (
     <ScrollView style={styles.container}>
       {comments?.map((comment, index) => {
-        if (comment.author.id === user.uid) {
+        if (comment.author.id === postAuthor) {
           return <Answer comment={comment} key={index} />;
         }
         return <Comment comment={comment} key={index} />;

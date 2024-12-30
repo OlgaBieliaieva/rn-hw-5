@@ -17,6 +17,7 @@ const CommentsScreen = ({ route }) => {
   const [newComment, setNewComment] = useState("");
   const [comments, setComments] = useState("");
   const post = route.params?.post;
+  console.log(post);
 
   useEffect(() => {
     fetchComments();
@@ -51,7 +52,9 @@ const CommentsScreen = ({ route }) => {
       <View style={styles.imgWrapper}>
         <Image source={{ uri: post.photoUrl }} style={styles.img} />
       </View>
-      {comments && <CommentsList comments={comments} user={user} />}
+      {comments && (
+        <CommentsList comments={comments} postAuthor={post.userId} />
+      )}
       <View style={styles.commentContainer}>
         <TextInput
           multiline
