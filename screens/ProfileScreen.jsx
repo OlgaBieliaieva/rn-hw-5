@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View, Image, Text, TouchableOpacity } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Image,
+  Text,
+  TouchableOpacity,
+  ActivityIndicator,
+} from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutDB } from "../utils/auth";
 import { getUserPosts } from "../utils/firestore";
@@ -18,6 +25,8 @@ const ProfileScreen = ({ navigation }) => {
   useEffect(() => {
     if (user) {
       fetchUserPosts();
+    } else {
+      navigation.replace("Login");
     }
   }, []);
 
@@ -28,6 +37,10 @@ const ProfileScreen = ({ navigation }) => {
     } catch (error) {
       console.error("Error fetching posts:", error);
     }
+  }
+
+  if (!user) {
+    return <ActivityIndicator size="large" color="#FF6C00" />;
   }
 
   return (

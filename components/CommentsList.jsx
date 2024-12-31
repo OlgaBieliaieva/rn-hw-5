@@ -4,8 +4,7 @@ import Comment from "./Comment";
 import Answer from "./Answer";
 
 const CommentsList = ({ comments, postAuthor }) => {
-  console.log(comments);
-
+  
   return (
     <ScrollView style={styles.container}>
       {comments?.map((comment, index) => {

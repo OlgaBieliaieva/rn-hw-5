@@ -20,7 +20,6 @@ const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
-  console.log(navigation);
 
   function handleSubmit() {
     loginDB({ email, password }, dispatch);

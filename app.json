@@ -16,7 +16,10 @@
       "assets/fonts/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "config": {
+        "googleMapsApiKey": "AIzaSyDXJb0VniQdxiCb4EJLvWVLzea0m43ktWw"
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -31,9 +34,21 @@
         "android.permission.ACCESS_FINE_LOCATION",
         "android.permission.READ_EXTERNAL_STORAGE",
         "android.permission.WRITE_EXTERNAL_STORAGE",
+        "android.permission.ACCESS_MEDIA_LOCATION",
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO",
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE",
         "android.permission.ACCESS_MEDIA_LOCATION"
       ],
-      "package": "com.o.shapoval.myapp"
+      "package": "com.o.shapoval.myapp",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyDXJb0VniQdxiCb4EJLvWVLzea0m43ktWw"
+        }
+      }
     },
     "web": {
       "favicon": "./assets/images/favicon.png"
@@ -75,6 +90,12 @@
       "eas": {
         "projectId": "b05cf294-7744-48ca-a925-7e46666753ef"
       }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/b05cf294-7744-48ca-a925-7e46666753ef"
     }
   }
 }

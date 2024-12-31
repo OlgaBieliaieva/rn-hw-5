@@ -18,7 +18,6 @@ const Answer = ({ comment }) => {
     </View>
   );
 };
-// 09 червня, 2020 | 09:14
 export default Answer;
 
 const styles = StyleSheet.create({

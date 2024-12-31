@@ -35,9 +35,6 @@ export default function App() {
         loading={<Text>Loading...</Text>}
         persistor={store.persistor}
       >
-        {/* <NavigationContainer>
-          <StackNavigator />
-        </NavigationContainer> */}
         <AuthListener />
       </PersistGate>
     </Provider>

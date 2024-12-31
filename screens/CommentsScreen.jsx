@@ -17,7 +17,6 @@ const CommentsScreen = ({ route }) => {
   const [newComment, setNewComment] = useState("");
   const [comments, setComments] = useState("");
   const post = route.params?.post;
-  console.log(post);
 
   useEffect(() => {
     fetchComments();
@@ -35,7 +34,6 @@ const CommentsScreen = ({ route }) => {
   async function addComment() {
     try {
       const commentId = await addCommentToPost(post.id, user.uid, newComment);
-      console.log("Comment successfully added with ID:", commentId);
       return commentId;
     } catch (error) {
       console.error("Failed to add comment:", error);
